@@ -504,10 +504,11 @@
 
       <span class="field-label" id="ap2-linklabel">Arbeitsprobe öffnen</span>
       <div class="actions" aria-describedby="ap2-linklabel">
-        <!-- data-fallback: greift, solange die PDF noch nicht im Repo liegt -->
+        <!-- Das href zeigt auf den Weg, der ohne JavaScript funktioniert.
+             Liegt die PDF im Repo, schaltet das Skript auf sie um. -->
         <a class="link-box link-box--action"
-           href="Arbeitsprobe_2_Cuply_Svenja_Mumelter.pdf"
-           data-fallback="https://drive.google.com/file/d/1QF7jdiwFWQKerbsaYSBoITLAcL9FLAlg/view?usp=sharing"
+           href="https://drive.google.com/file/d/1QF7jdiwFWQKerbsaYSBoITLAcL9FLAlg/view?usp=sharing"
+           data-prefer="Arbeitsprobe_2_Cuply_Svenja_Mumelter.pdf"
            target="_blank" rel="noopener">
           <span class="action-label">Cuply: Marketing Case</span>
           <span class="action-meta">PDF · 105 Seiten</span>
@@ -567,25 +568,15 @@
     });
   });
 
-  // Kein toter Download-Button. Liegt eine verlinkte PDF noch nicht auf dem
-  // Server, greift der in data-fallback hinterlegte Link (z. B. Google Drive).
-  // Gibt es keinen Fallback, wird der Button stumm geschaltet statt ins Leere
-  // zu führen. Nur ein echtes 404 löst das aus — bei Netzwerkfehlern bleibt
-  // der Button unverändert, damit ein funktionierender Download nie verschwindet.
-  document.querySelectorAll('a.link-box--action[href$=".pdf"]').forEach(function (el) {
-    var local = el.getAttribute('href');
-    var fallback = el.dataset.fallback;
-    fetch(local, { method: 'HEAD' })
-      .then(function (res) {
-        if (res.status !== 404) return;
-        if (fallback) { el.href = fallback; return; }
-        el.classList.add('link-box--pending');
-        el.setAttribute('aria-disabled', 'true');
-        el.removeAttribute('href');
-        var meta = el.querySelector('.action-meta');
-        if (meta) meta.textContent = 'folgt in Kürze';
-      })
-      .catch(function () { /* Netzwerkfehler: Button unverändert lassen */ });
+  // Der Button verweist im HTML immer auf den Weg, der ohne JavaScript
+  // funktioniert. Liegt die PDF zusaetzlich im Repo, wird hier darauf
+  // umgeschaltet — sie laedt schneller und bleibt vom Drive-Konto unabhaengig.
+  // Schlaegt die Pruefung fehl, bleibt der bestehende Link unangetastet.
+  document.querySelectorAll('a.link-box--action[data-prefer]').forEach(function (el) {
+    var preferred = el.dataset.prefer;
+    fetch(preferred, { method: 'HEAD' })
+      .then(function (res) { if (res.ok) el.href = preferred; })
+      .catch(function () { /* Netzwerkfehler: Link unveraendert lassen */ });
   });
 </script>
 
