@@ -533,15 +533,21 @@
   // Titelbild fuer den Player. Wird erst eingeblendet, wenn die Datei
   // tatsaechlich geladen ist; fehlt sie, bleibt der Rahmen unveraendert.
   (function () {
-    var src = 'assets/video-poster.jpg';
     var frame = document.querySelector('.video-frame');
     if (!frame) return;
-    var probe = new Image();
-    probe.onload = function () {
-      frame.style.setProperty('--poster', 'url("' + src + '")');
-      frame.classList.add('has-poster');
-    };
-    probe.src = src;
+    // Der Reihe nach probieren, damit die Dateiendung beim Hochladen egal ist.
+    var candidates = ['assets/video-poster.jpg', 'assets/video-poster.jpeg',
+                      'assets/video-poster.png', 'assets/video-poster.webp'];
+    (function tryNext(i) {
+      if (i >= candidates.length) return;
+      var probe = new Image();
+      probe.onload = function () {
+        frame.style.setProperty('--poster', 'url("' + candidates[i] + '")');
+        frame.classList.add('has-poster');
+      };
+      probe.onerror = function () { tryNext(i + 1); };
+      probe.src = candidates[i];
+    })(0);
   })();
 
   // Video erst auf Klick laden: vorher geht keine Anfrage an Google raus.
