@@ -44,11 +44,14 @@
     --rule:#1F1F1F;
     --link:#0563C1;
 
-    /* Typo-Skala: bei 1440px Viewport exakt die Werte der Slide */
-    --fs-eyebrow:clamp(12px, 1.25vw, 18px);
-    --fs-h1:clamp(40px, 5vw, 72px);
-    --fs-body:clamp(16px, 1.5625vw, 22.5px);
-    --fs-small:clamp(12px, 1.25vw, 18px);
+    /* Typo-Skala: die Werte der Original-Slide, gleichmaessig auf 85 % gesetzt.
+       Die Slide ist fuer Projektion gemacht, am Bildschirm liest sich das
+       kleinere Raster ruhiger. Alle Groessen skalieren mit demselben Faktor,
+       damit die Proportionen der Slide erhalten bleiben. */
+    --fs-eyebrow:clamp(11px, 1.06vw, 15.3px);
+    --fs-h1:clamp(34px, 4.25vw, 61.2px);
+    --fs-body:clamp(15px, 1.33vw, 19.1px);
+    --fs-small:clamp(11px, 1.06vw, 15.3px);
 
     /* Rasterbreite der Slide: 1267.5 von 1440 */
     --content:1267.5px;
@@ -87,12 +90,12 @@
   }
   .logo{
     display:block;
-    width:clamp(138px,13.79vw,198.6px);
+    width:clamp(118px,11.72vw,168.8px);
     height:auto;
   }
   .wordmark{
     font-family:'Cormorant Garamond',Garamond,Georgia,serif;
-    font-size:clamp(20px,2.08vw,30px);
+    font-size:clamp(17px,1.77vw,25.5px);
     line-height:1;
     color:var(--ink);
     letter-spacing:.01em;
@@ -181,7 +184,8 @@
     background:transparent;
     padding:clamp(12px,1.22vw,17.6px) clamp(10px,.99vw,14.3px)
             clamp(12px,1.22vw,17.6px) clamp(14px,1.43vw,20.6px);
-    max-width:824px; /* 821px Rahmen der Slide + 2px Border + 1px Reserve */
+    width:fit-content;
+    max-width:100%;
     color:var(--link);
     font-size:var(--fs-small);
     line-height:1.28;
@@ -204,7 +208,7 @@
   }
   .link-box--action .action-label{
     font-family:'Cormorant Garamond',Garamond,Georgia,serif;
-    font-size:clamp(17px,1.6vw,23px);
+    font-size:clamp(15px,1.36vw,19.6px);
     letter-spacing:.05em;
     text-transform:uppercase;
     line-height:1.1;
@@ -230,18 +234,33 @@
   }
 
   /* ============ Video ============ */
+  /* Zwischenueberschrift ueber dem Player: deutlich groesser als ein Label,
+     damit das Video als eigener Einstieg lesbar ist. */
+  .subhead{
+    font-family:'Cormorant Garamond',Garamond,Georgia,serif;
+    font-weight:400;
+    font-size:clamp(24px,2.5vw,36px);
+    line-height:1.1;
+    color:var(--ink);
+    margin:0 0 clamp(6px,.6vw,9px);
+  }
   .lead{margin:0 0 clamp(16px,1.6vw,23px);max-width:924px}
 
   /* Link und QR-Code unter dem Video: die Alternative, wenn der Player klemmt.
      Das Raster entspricht dem der Original-Slide, der QR steht rechtsbuendig. */
   .alt-access{
     display:grid;
-    grid-template-columns:minmax(0,1fr) clamp(150px,15.3vw,220px);
-    column-gap:clamp(24px,2vw,29px);
+    /* Erste Spalte haengt sich an den Linkkasten, damit der QR-Code direkt
+       daneben steht statt am rechten Rand zu vereinsamen. */
+    grid-template-columns:auto clamp(120px,12.2vw,176px);
+    justify-content:start;
+    column-gap:clamp(24px,2.8vw,40px);
     align-items:start;
     margin-top:clamp(26px,2.7vw,39px);
   }
   .alt-access .field-label{margin-top:0}
+  .alt-access .video-fallback{margin:0 0 clamp(12px,1.25vw,18px)}
+  .alt-access + .points{margin-top:clamp(30px,3.1vw,45px)}
 
   .video-frame{
     position:relative;
@@ -288,7 +307,7 @@
   .video-facade:focus-visible .video-play{background:rgba(214,152,42,.12)}
   .video-cta{
     font-family:'Cormorant Garamond',Garamond,Georgia,serif;
-    font-size:clamp(17px,1.6vw,23px);
+    font-size:clamp(15px,1.36vw,19.6px);
     letter-spacing:.05em;
     text-transform:uppercase;
     line-height:1.1;
@@ -333,18 +352,18 @@
   /* ============ Abschluss ============ */
   /* padding-block, damit die Seitenränder aus .sheet erhalten bleiben */
   .colophon-block{padding-block:clamp(30px,3vw,44px) clamp(40px,4vw,58px)}
+  /* Bewusst kleiner als der Fliesstext und auf eine Zeile ausgelegt */
   .colophon{
     margin:0;
-    font-size:var(--fs-small);
+    font-size:clamp(10px,.9vw,13px);
     color:var(--muted);
-    max-width:924px;
-    line-height:1.45;
+    line-height:1.5;
   }
   .copyright{
-    margin:clamp(10px,1vw,15px) 0 0;
-    font-size:var(--fs-small);
+    margin:clamp(6px,.6vw,9px) 0 0;
+    font-size:clamp(10px,.9vw,13px);
     color:var(--muted);
-    line-height:1.45;
+    line-height:1.5;
   }
 
   /* ============ Mobil: gleiche Sprache, gestapelt ============ */
@@ -387,17 +406,9 @@
 
   <div class="slide-body slide-body--single">
     <div>
-      <h1 id="ap1-title">Arbeitsprobe <span class="accent">RoyalShrimp.de</span></h1>
+      <h1 id="ap1-title">Arbeitsprobe 1 <span class="accent">RoyalShrimp.de</span></h1>
 
-      <!-- Zeilenumbrueche entsprechen der Original-Slide, daher feste Textbreite -->
-      <ul class="points">
-        <li>Mitgründerin, gemeinsamer Aufbau des Onlineshops von Grund auf ab Mai 2020</li>
-        <li>Betrieb des Shops bis Ende 2024</li>
-        <li>Backend, Shopstruktur, Design, Produktpflege, Texte, Fotos und Videos zu zweit vollständig selbst umgesetzt</li>
-        <li>Damals ohne KI, heute wäre die Umsetzung mit KI, Automatisierung und über MCP angebundenen Tools und Datenquellen deutlich effizienter</li>
-      </ul>
-
-      <span class="field-label" id="video-linklabel">Shop-Walkthrough</span>
+      <h3 class="subhead" id="video-linklabel">Shop-Walkthrough</h3>
       <p class="lead">Ein Rundgang durch den Shop, wie er zuletzt online war.</p>
 
       <div class="video-frame">
@@ -414,15 +425,16 @@
         </button>
       </div>
 
-      <!-- Link und QR-Code sind der Notausgang, falls der Player klemmt -->
+      <!-- Link und QR-Code sind der Notausgang, falls der Player klemmt.
+           Der erklaerende Satz steht deshalb ueber beiden, nicht darunter. -->
       <div class="alt-access">
         <div>
+          <p class="video-fallback">Startet das Video oben nicht, lässt es sich hierüber direkt in Google Drive öffnen.</p>
           <span class="field-label" id="ap1-linklabel">Link zum Öffnen &amp; Kopieren</span>
           <a class="link-box"
              href="https://drive.google.com/file/d/1ZM4CWZ1CJGp5d3qtxk0aSyLfXs3kVGFF/view?usp=sharing"
              target="_blank" rel="noopener"
              aria-describedby="ap1-linklabel">https://drive.google.com/file/d/1ZM4CWZ1CJGp5d3qtxk0aSyLfXs3kVGFF/view?usp=sharing</a>
-          <p class="video-fallback">Startet das Video oben nicht, lässt es sich hierüber direkt in Google Drive öffnen.</p>
         </div>
 
         <div class="qr-col">
@@ -434,15 +446,17 @@
           <span class="qr-caption">Zum Scannen</span>
         </div>
       </div>
+
+      <ul class="points">
+        <li>Mitgründerin, gemeinsamer Aufbau des Onlineshops von Grund auf ab Mai 2020</li>
+        <li>Betrieb des Shops bis Ende 2024</li>
+        <li>Backend, Shopstruktur, Design, Produktpflege, Texte, Fotos und Videos zu zweit vollständig selbst umgesetzt</li>
+        <li>Damals ohne KI, heute wäre die Umsetzung mit KI, Automatisierung und über MCP angebundenen Tools und Datenquellen deutlich effizienter</li>
+      </ul>
     </div>
   </div>
 
   <hr class="rule">
-
-  <div class="slide-foot">
-    <span>RoyalShrimp.de</span>
-    <span>Google Drive · Zugriff über Link</span>
-  </div>
 
 </section>
 
@@ -458,7 +472,7 @@
 
   <div class="slide-body slide-body--single">
     <div>
-      <h2 id="ap2-title">Arbeitsprobe <span class="accent">Cuply</span></h2>
+      <h2 id="ap2-title">Arbeitsprobe 2 <span class="accent">Cuply</span></h2>
 
       <ul class="points">
         <li>Fiktiver Marketing Case, 105 Seiten</li>
@@ -481,11 +495,6 @@
   </div>
 
   <hr class="rule">
-
-  <div class="slide-foot">
-    <span>Cuply</span>
-    <span>PDF · Öffnen oder Herunterladen</span>
-  </div>
 
 </section>
 
