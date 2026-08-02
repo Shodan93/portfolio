@@ -72,6 +72,16 @@ npm run dev
 Der Deploy läuft über die Git-Integration von Cloudflare Workers: Ein Push auf
 `main` baut und veröffentlicht automatisch.
 
+**Stand 02.08.2026:** Die automatischen Builds greifen noch nicht. Unter
+Settings → Build steht die Warnung „Projekt nicht mit Ihrem Git-Konto
+verknüpft"; die Cloudflare-GitHub-App sieht dieses Repository nicht. Zu
+beheben unter github.com/settings/installations → „Cloudflare Workers and
+Pages" → Configure → Repository access → `portfolio` hinzufügen. Wichtig
+dabei: als der Kontoinhaber von `Shodan93` eingeloggt sein.
+
+Bis dahin muss nach jedem Push in der Build-Historie einmal „Retry build"
+geklickt werden.
+
 Manuell geht es mit einem Cloudflare-API-Token:
 
 ```sh
